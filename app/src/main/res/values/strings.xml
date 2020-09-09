@@ -4,4 +4,6 @@
     <string name="general_title">Notes App</string>
     <string name="title_note">Very important note</string>
     <string name="text_note">My very important note text with very important information</string>
+    <string name="hint_title">Note title</string>
+    <string name="hint_text">Note text</string>
 </resources>
