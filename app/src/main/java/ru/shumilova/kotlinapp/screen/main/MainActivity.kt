@@ -6,9 +6,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_note.*
 import ru.shumilova.kotlinapp.R
+import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
 import ru.shumilova.kotlinapp.screen.note.NoteActivity
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,10 +38,13 @@ class MainActivity : AppCompatActivity() {
                 adapter.notes = it.notes
             }
         })
+
+        fab_add_button.setOnClickListener { openNoteScreen(null) }
     }
 
     private fun openNoteScreen(note: Note?) {
         val intent = NoteActivity.getStartIntent(this, note)
         startActivity(intent)
     }
+
 }

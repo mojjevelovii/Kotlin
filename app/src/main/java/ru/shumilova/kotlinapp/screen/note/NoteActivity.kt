@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_note.*
 import ru.shumilova.kotlinapp.R
+import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
 import ru.shumilova.kotlinapp.extensions.DATE_TIME_FORMAT
 import ru.shumilova.kotlinapp.extensions.getResource
@@ -50,9 +51,9 @@ class NoteActivity : AppCompatActivity() {
         if (tiet_title.text.isNullOrEmpty()) return
 
         tiet_title.postDelayed({
-            note = note?.copy(title=tiet_title.text.toString(),
-            text = et_note_body.text.toString(),
-            lastChanged = Date())
+            note = note?.copy(title = tiet_title.text.toString(),
+                    text = et_note_body.text.toString(),
+                    lastChanged = Date()) ?: createNewNote()
 
             note?.let { viewModel.saveChanges(it) }
         }, SAVE_DELAY)
@@ -99,5 +100,12 @@ class NoteActivity : AppCompatActivity() {
         }
         else -> super.onOptionsItemSelected(item)
     }
+
+    private fun createNewNote(): Note =
+            Note(UUID.randomUUID().toString(),
+                    et_note_body.text.toString(),
+                    tiet_title.text.toString(),
+                    Color.VIOLET,
+                    Date())
 
 }
