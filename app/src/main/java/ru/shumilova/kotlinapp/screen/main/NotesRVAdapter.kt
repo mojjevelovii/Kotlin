@@ -9,9 +9,11 @@ import kotlinx.android.synthetic.main.item_note.view.*
 import ru.shumilova.kotlinapp.R
 import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
+import ru.shumilova.kotlinapp.extensions.getResource
 
 
-class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
+class NotesRVAdapter(private val onItemClickListener: OnItemClickListener)
+    : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
 
     var notes: List<Note> = listOf()
         set(value) {
@@ -26,23 +28,20 @@ class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(notes[position])
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(note: Note) = with(note) {
             itemView.tv_title.text = title
             itemView.tv_text.text = text
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, mapColor(color)))
+
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color.getResource()))
+            itemView.setOnClickListener { onItemClickListener.onItemClick(note) }
         }
 
-        private fun mapColor(color: Color) =
-                when (color) {
-                    Color.WHITE -> R.color.color_white
-                    Color.YELLOW -> R.color.color_yellow
-                    Color.GREEN -> R.color.color_green
-                    Color.BLUE -> R.color.color_blue
-                    Color.RED -> R.color.color_red
-                    Color.VIOLET -> R.color.color_violet
-                    Color.PINK -> R.color.color_pink
-                }
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(note: Note)
+    }
+
 
 }
