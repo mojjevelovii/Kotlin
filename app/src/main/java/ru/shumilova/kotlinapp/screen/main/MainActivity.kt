@@ -13,8 +13,8 @@ import ru.shumilova.kotlinapp.screen.note.NoteActivity
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: MainViewModel
-    lateinit var adapter: NotesRVAdapter
+    private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: NotesRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

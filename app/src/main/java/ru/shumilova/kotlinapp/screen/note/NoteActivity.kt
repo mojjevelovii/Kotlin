@@ -3,9 +3,13 @@ package ru.shumilova.kotlinapp.screen.note
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_note.*
 import ru.shumilova.kotlinapp.R
@@ -19,6 +23,7 @@ import java.util.*
 class NoteActivity : AppCompatActivity() {
     companion object {
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
+        private const val SAVE_DELAY = 2000L
 
         fun getStartIntent(context: Context, note: Note?): Intent {
             val intent = Intent(context, NoteActivity::class.java)
@@ -28,10 +33,37 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private var note: Note? = null
+    private lateinit var viewModel: NoteViewModel
+    private val textChangeListener = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(p0: Editable?) {
+            triggerSaveNote()
+        }
+    }
+
+    private fun triggerSaveNote() {
+        if (tiet_title.text.isNullOrEmpty()) return
+
+        tiet_title.postDelayed({
+            note = note?.copy(title=tiet_title.text.toString(),
+            text = et_note_body.text.toString(),
+            lastChanged = Date())
+
+            note?.let { viewModel.saveChanges(it) }
+        }, SAVE_DELAY)
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
+
+        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         note = intent.getParcelableExtra(EXTRA_NOTE)
         setSupportActionBar(toolbar)
@@ -44,6 +76,8 @@ class NoteActivity : AppCompatActivity() {
             getString(R.string.new_note_title)
         }
 
+        tiet_title.addTextChangedListener(textChangeListener)
+        et_note_body.addTextChangedListener(textChangeListener)
         initView()
     }
 
