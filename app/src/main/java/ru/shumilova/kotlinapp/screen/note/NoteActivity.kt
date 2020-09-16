@@ -3,7 +3,6 @@ package ru.shumilova.kotlinapp.screen.note
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
@@ -15,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_note.*
 import ru.shumilova.kotlinapp.R
 import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
-import ru.shumilova.kotlinapp.extensions.DATE_TIME_FORMAT
 import ru.shumilova.kotlinapp.extensions.getResource
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +22,7 @@ import java.util.*
 class NoteActivity : AppCompatActivity() {
     companion object {
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
-        private const val SAVE_DELAY = 2000L
+        private const val DATE_TIME_FORMAT = "dd.MMM.yy HH:mm"
 
         fun getStartIntent(context: Context, note: Note?): Intent {
             val intent = Intent(context, NoteActivity::class.java)
@@ -50,13 +48,13 @@ class NoteActivity : AppCompatActivity() {
     private fun triggerSaveNote() {
         if (tiet_title.text.isNullOrEmpty()) return
 
-        tiet_title.postDelayed({
+        tiet_title.post {
             note = note?.copy(title = tiet_title.text.toString(),
                     text = et_note_body.text.toString(),
                     lastChanged = Date()) ?: createNewNote()
 
             note?.let { viewModel.saveChanges(it) }
-        }, SAVE_DELAY)
+        }
 
     }
 
