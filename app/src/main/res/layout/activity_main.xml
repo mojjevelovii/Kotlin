@@ -36,6 +36,6 @@
         app:layout_anchorGravity="bottom|end"
         android:src="@drawable/ic_add_24"
         app:layout_anchor="@id/rv_notes"
-        app:layout_behavior=".screen.main.common.FabBehavior"/>
+        app:layout_behavior=".screen.common.FabBehavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

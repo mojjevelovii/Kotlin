@@ -1,4 +1,4 @@
-package ru.shumilova.kotlinapp.screen.main.common
+package ru.shumilova.kotlinapp.screen.common
 
 import android.content.Context
 import android.util.AttributeSet
