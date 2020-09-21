@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_note.view.*
 import ru.shumilova.kotlinapp.R
-import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
 import ru.shumilova.kotlinapp.extensions.getResource
 

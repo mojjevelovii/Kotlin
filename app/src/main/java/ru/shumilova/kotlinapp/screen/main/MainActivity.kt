@@ -1,28 +1,26 @@
 package ru.shumilova.kotlinapp.screen.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_note.*
 import ru.shumilova.kotlinapp.R
-import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
+import ru.shumilova.kotlinapp.screen.base.BaseActivity
 import ru.shumilova.kotlinapp.screen.note.NoteActivity
-import java.util.*
 
+class MainActivity : BaseActivity<List<Note>, MainViewState>() {
 
-class MainActivity : AppCompatActivity() {
+    override val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
-    private lateinit var viewModel: MainViewModel
+    override val layoutRes: Int = R.layout.activity_main
     private lateinit var adapter: NotesRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         rv_notes.layoutManager = GridLayoutManager(this, 2)
         adapter = NotesRVAdapter(object : NotesRVAdapter.OnItemClickListener {
@@ -33,18 +31,16 @@ class MainActivity : AppCompatActivity() {
 
         rv_notes.adapter = adapter
 
-        viewModel.getViewState().observe(this, Observer { value ->
-            value?.let {
-                adapter.notes = it.notes
-            }
-        })
-
         fab_add_button.setOnClickListener { openNoteScreen(null) }
     }
 
     private fun openNoteScreen(note: Note?) {
-        val intent = NoteActivity.getStartIntent(this, note)
+        val intent = NoteActivity.getStartIntent(this, note?.id)
         startActivity(intent)
+    }
+
+    override fun renderData(data: List<Note>) {
+        adapter.notes = data
     }
 
 }
