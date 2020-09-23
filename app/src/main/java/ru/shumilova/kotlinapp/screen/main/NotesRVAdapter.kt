@@ -4,15 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_note.view.*
 import ru.shumilova.kotlinapp.R
 import ru.shumilova.kotlinapp.data.entity.Note
-import ru.shumilova.kotlinapp.extensions.getResource
-
+import ru.shumilova.kotlinapp.extensions.getColorInt
 
 class NotesRVAdapter(private val onItemClickListener: OnItemClickListener)
     : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
@@ -36,9 +33,7 @@ class NotesRVAdapter(private val onItemClickListener: OnItemClickListener)
                 tv_title.text = title
                 tv_text.text = text
 
-                val color = note.color.getResource()
-
-                setCardBackgroundColor(ContextCompat.getColor(itemView.context, color))
+                setCardBackgroundColor(note.color.getColorInt(context))
                 setOnClickListener { onItemClickListener.onItemClick(note) }
             }
         }

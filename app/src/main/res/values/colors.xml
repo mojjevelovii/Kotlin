@@ -6,6 +6,8 @@
 
     <color name="color_dark_grey">#202220</color>
 
+    <color name="text_secondary">#66000000</color>
+
     <color name="color_white">#F5F5F5</color>
     <color name="color_yellow">#FFF59D</color>
     <color name="color_green">#81C784</color>
