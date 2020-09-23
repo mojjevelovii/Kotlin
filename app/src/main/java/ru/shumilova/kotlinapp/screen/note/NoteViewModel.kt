@@ -7,14 +7,15 @@ import ru.shumilova.kotlinapp.data.entity.Note
 import ru.shumilova.kotlinapp.data.model.NoteResult
 import ru.shumilova.kotlinapp.screen.base.BaseViewModel
 
-class NoteViewModel(private val repository: NotesRepository = NotesRepository) : BaseViewModel<Note?, NoteViewState>() {
+class NoteViewModel(private val notesRepository: NotesRepository) : BaseViewModel<Note?, NoteViewState>() {
 
     init {
         viewStateLiveData.value = NoteViewState()
     }
+
     private lateinit var pendingData: LiveData<NoteResult>
     private var pendingNote: Note? = null
-    private val singleResult = object: Observer<NoteResult> {
+    private val singleResult = object : Observer<NoteResult> {
         override fun onChanged(result: NoteResult) {
             when (result) {
                 is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(result.data as? Note)
@@ -29,13 +30,13 @@ class NoteViewModel(private val repository: NotesRepository = NotesRepository) :
     }
 
     fun loadNote(noteId: String) {
-        pendingData = repository.getNoteById(noteId)
+        pendingData = notesRepository.getNoteById(noteId)
         pendingData.observeForever(singleResult)
     }
 
     override fun onCleared() {
         if (pendingNote != null) {
-            repository.saveNote(pendingNote!!)
+            notesRepository.saveNote(pendingNote!!)
         }
     }
 }

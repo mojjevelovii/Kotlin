@@ -7,9 +7,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_note.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.shumilova.kotlinapp.R
 import ru.shumilova.kotlinapp.data.entity.Color
 import ru.shumilova.kotlinapp.data.entity.Note
@@ -34,9 +34,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     override val layoutRes: Int = R.layout.activity_note
 
     private var note: Note? = null
-    override val viewModel: NoteViewModel by lazy {
-        ViewModelProvider(this).get(NoteViewModel::class.java)
-    }
+    override val viewModel: NoteViewModel by viewModel()
 
     private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

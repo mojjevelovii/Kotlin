@@ -48,7 +48,7 @@ abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
 
     private fun startLogin() {
         val providers = listOf(AuthUI.IdpConfig.GoogleBuilder().build())
-        val intent: Intent = AuthUI.getInstance()
+        val intent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setLogo(R.drawable.android_and_kotlin)
                 .setTheme(R.style.LoginStyle)

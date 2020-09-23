@@ -2,11 +2,8 @@ package ru.shumilova.kotlinapp.data
 
 import ru.shumilova.kotlinapp.data.entity.Note
 import ru.shumilova.kotlinapp.data.provider.DataProvider
-import ru.shumilova.kotlinapp.data.provider.FirestoreProvider
 
-object NotesRepository {
-
-    private val dataProvider: DataProvider = FirestoreProvider()
+class NotesRepository (private val dataProvider: DataProvider){
 
     fun getCurrentUser() = dataProvider.getCurrentUser()
     fun getNotes() = dataProvider.subscribeToAllNotes()

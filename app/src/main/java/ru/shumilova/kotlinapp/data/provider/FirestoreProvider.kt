@@ -9,7 +9,7 @@ import ru.shumilova.kotlinapp.data.entity.User
 import ru.shumilova.kotlinapp.data.errors.NoAuthException
 import ru.shumilova.kotlinapp.data.model.NoteResult
 
-class FirestoreProvider : DataProvider {
+class FirestoreProvider(private val firebaseAuth: FirebaseAuth, private val store: FirebaseFirestore) : DataProvider {
 
     companion object {
         private const val NOTES_COLLECTION = "notes"
@@ -17,9 +17,8 @@ class FirestoreProvider : DataProvider {
     }
 
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = firebaseAuth.currentUser
 
-    private val store by lazy { FirebaseFirestore.getInstance() }
     private val notesReference
         get() = currentUser?.let {
             store.collection(USERS_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
