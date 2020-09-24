@@ -18,7 +18,10 @@ class NoteViewModel(private val notesRepository: NotesRepository) : BaseViewMode
     private val singleResult = object : Observer<NoteResult> {
         override fun onChanged(result: NoteResult) {
             when (result) {
-                is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = result.data as? Note))
+                is NoteResult.Success<*> -> {
+                    pendingNote = result.data as? Note
+                    viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = pendingNote))
+                }
                 is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
             }
             pendingData.removeObserver(this)
@@ -27,6 +30,7 @@ class NoteViewModel(private val notesRepository: NotesRepository) : BaseViewMode
 
     private val singleDeleteResult = object : Observer<NoteResult> {
         override fun onChanged(result: NoteResult) {
+            pendingNote = null
             when (result) {
                 is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(NoteViewState.Data(isDeleted = true))
                 is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
@@ -55,6 +59,5 @@ class NoteViewModel(private val notesRepository: NotesRepository) : BaseViewMode
             pendingData = notesRepository.deleteNote(it.id)
             pendingData.observeForever(singleDeleteResult)
         }
-
     }
 }
