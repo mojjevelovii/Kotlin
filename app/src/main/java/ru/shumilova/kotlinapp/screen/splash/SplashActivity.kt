@@ -1,13 +1,11 @@
 package ru.shumilova.kotlinapp.screen.splash
 
-import androidx.lifecycle.ViewModelProvider
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.shumilova.kotlinapp.screen.base.BaseActivity
 import ru.shumilova.kotlinapp.screen.main.MainActivity
 
 class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
-    override val viewModel by lazy {
-        ViewModelProvider(this).get(SplashViewModel::class.java)
-    }
+    override val viewModel: SplashViewModel by viewModel()
 
     override val layoutRes = null
 

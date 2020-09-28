@@ -7,7 +7,7 @@ import ru.shumilova.kotlinapp.data.errors.NoAuthException
 import ru.shumilova.kotlinapp.screen.base.BaseViewModel
 
 
-class SplashViewModel() : BaseViewModel<Boolean?, SplashViewState>() {
+class SplashViewModel(val notesRepository: NotesRepository) : BaseViewModel<Boolean?, SplashViewState>() {
 
     private val userObserver = Observer<User?> { userResult ->
         viewStateLiveData.value = when {
@@ -17,10 +17,10 @@ class SplashViewModel() : BaseViewModel<Boolean?, SplashViewState>() {
     }
 
     fun requestUser() {
-        NotesRepository.getCurrentUser().observeForever(userObserver)
+        notesRepository.getCurrentUser().observeForever(userObserver)
     }
 
     override fun onCleared() {
-        NotesRepository.getCurrentUser().removeObserver(userObserver)
+        notesRepository.getCurrentUser().removeObserver(userObserver)
     }
 }

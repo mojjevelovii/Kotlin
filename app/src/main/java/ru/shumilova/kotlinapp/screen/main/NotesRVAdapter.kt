@@ -3,13 +3,13 @@ package ru.shumilova.kotlinapp.screen.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_note.view.*
 import ru.shumilova.kotlinapp.R
 import ru.shumilova.kotlinapp.data.entity.Note
-import ru.shumilova.kotlinapp.extensions.getResource
-
+import ru.shumilova.kotlinapp.extensions.getColorInt
 
 class NotesRVAdapter(private val onItemClickListener: OnItemClickListener)
     : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
@@ -27,15 +27,16 @@ class NotesRVAdapter(private val onItemClickListener: OnItemClickListener)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(notes[position])
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(note: Note) = with(note) {
-            itemView.tv_title.text = title
-            itemView.tv_text.text = text
+            (itemView as CardView).run {
+                tv_title.text = title
+                tv_text.text = text
 
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color.getResource()))
-            itemView.setOnClickListener { onItemClickListener.onItemClick(note) }
+                setCardBackgroundColor(note.color.getColorInt(context))
+                setOnClickListener { onItemClickListener.onItemClick(note) }
+            }
         }
-
     }
 
     interface OnItemClickListener {
